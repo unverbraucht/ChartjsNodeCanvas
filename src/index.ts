@@ -230,7 +230,7 @@ export class ChartJSNodeCanvas {
 
 	private initialize(options: ChartJSNodeCanvasOptions): typeof ChartJS {
 
-		const chartJs: typeof ChartJS = require('chart.js');
+		const chartJs: typeof ChartJS = require('chart.js/auto');
 
 		if (options.plugins?.requireChartJSLegacy) {
 			for (const plugin of options.plugins.requireChartJSLegacy) {

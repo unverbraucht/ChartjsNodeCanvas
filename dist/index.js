@@ -146,7 +146,7 @@ class ChartJSNodeCanvas {
     }
     initialize(options) {
         var _a, _b, _c, _d;
-        const chartJs = require('chart.js');
+        const chartJs = require('chart.js/auto');
         if ((_a = options.plugins) === null || _a === void 0 ? void 0 : _a.requireChartJSLegacy) {
             for (const plugin of options.plugins.requireChartJSLegacy) {
                 require(plugin);
