@@ -269,8 +269,6 @@ export class ChartJSNodeCanvas {
 			chartJs.register(new BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
 		}
 
-		delete require.cache[require.resolve('chart.js')];
-
 		return chartJs;
 	}
 

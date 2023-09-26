@@ -181,7 +181,6 @@ class ChartJSNodeCanvas {
         if (options.backgroundColour) {
             chartJs.register(new backgroundColourPlugin_1.BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
         }
-        delete require.cache[require.resolve('chart.js')];
         return chartJs;
     }
     renderChart(configuration) {
