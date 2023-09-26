@@ -1,7 +1,6 @@
 import { Readable } from 'stream';
 import { Chart as ChartJS, ChartConfiguration, ChartComponentLike } from 'chart.js';
-import { createCanvas, registerFont, Image } from 'canvas';
-import { freshRequire } from './freshRequire';
+import canvas, { createCanvas, registerFont, Image } from 'canvas';
 import { BackgroundColourPlugin } from './backgroundColourPlugin';
 
 export type ChartJSNodeCanvasPlugins = {
@@ -92,7 +91,6 @@ export class ChartJSNodeCanvas {
 
 		this._width = options.width;
 		this._height = options.height;
-		const canvas = freshRequire('canvas');
 		this._createCanvas = canvas.createCanvas;
 		this._registerFont = canvas.registerFont;
 		this._image = canvas.Image;
@@ -242,7 +240,7 @@ export class ChartJSNodeCanvas {
 		if (options.plugins?.globalVariableLegacy) {
 			(global as any).Chart = chartJs;
 			for (const plugin of options.plugins.globalVariableLegacy) {
-				freshRequire(plugin);
+				require(plugin);
 			}
 			delete (global as any).Chart;
 		}
@@ -250,7 +248,7 @@ export class ChartJSNodeCanvas {
 		if (options.plugins?.modern) {
 			for (const plugin of options.plugins.modern) {
 				if (typeof plugin === 'string') {
-					chartJs.register(freshRequire(plugin));
+					chartJs.register(require(plugin));
 				} else {
 					chartJs.register(plugin);
 				}
@@ -259,7 +257,7 @@ export class ChartJSNodeCanvas {
 
 		if (options.plugins?.requireLegacy) {
 			for (const plugin of options.plugins.requireLegacy) {
-				chartJs.register(freshRequire(plugin));
+				chartJs.register(require(plugin));
 			}
 		}
 

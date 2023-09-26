@@ -1,6 +1,10 @@
-import { freshRequire } from './freshRequire';
-import { BackgroundColourPlugin } from './backgroundColourPlugin';
-export class ChartJSNodeCanvas {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChartJSNodeCanvas = void 0;
+const tslib_1 = require("tslib");
+const canvas_1 = (0, tslib_1.__importDefault)(require("canvas"));
+const backgroundColourPlugin_1 = require("./backgroundColourPlugin");
+class ChartJSNodeCanvas {
     /**
      * Create a new instance of CanvasRenderService.
      *
@@ -18,10 +22,9 @@ export class ChartJSNodeCanvas {
         }
         this._width = options.width;
         this._height = options.height;
-        const canvas = freshRequire('canvas');
-        this._createCanvas = canvas.createCanvas;
-        this._registerFont = canvas.registerFont;
-        this._image = canvas.Image;
+        this._createCanvas = canvas_1.default.createCanvas;
+        this._registerFont = canvas_1.default.registerFont;
+        this._image = canvas_1.default.Image;
         this._type = options.type && options.type.toLowerCase();
         this._chartJs = this.initialize(options);
     }
@@ -153,14 +156,14 @@ export class ChartJSNodeCanvas {
         if ((_b = options.plugins) === null || _b === void 0 ? void 0 : _b.globalVariableLegacy) {
             global.Chart = chartJs;
             for (const plugin of options.plugins.globalVariableLegacy) {
-                freshRequire(plugin);
+                require(plugin);
             }
             delete global.Chart;
         }
         if ((_c = options.plugins) === null || _c === void 0 ? void 0 : _c.modern) {
             for (const plugin of options.plugins.modern) {
                 if (typeof plugin === 'string') {
-                    chartJs.register(freshRequire(plugin));
+                    chartJs.register(require(plugin));
                 }
                 else {
                     chartJs.register(plugin);
@@ -169,14 +172,14 @@ export class ChartJSNodeCanvas {
         }
         if ((_d = options.plugins) === null || _d === void 0 ? void 0 : _d.requireLegacy) {
             for (const plugin of options.plugins.requireLegacy) {
-                chartJs.register(freshRequire(plugin));
+                chartJs.register(require(plugin));
             }
         }
         if (options.chartCallback) {
             options.chartCallback(chartJs);
         }
         if (options.backgroundColour) {
-            chartJs.register(new BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
+            chartJs.register(new backgroundColourPlugin_1.BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
         }
         delete require.cache[require.resolve('chart.js')];
         return chartJs;
@@ -195,4 +198,5 @@ export class ChartJSNodeCanvas {
         return chart;
     }
 }
+exports.ChartJSNodeCanvas = ChartJSNodeCanvas;
 //# sourceMappingURL=index.js.map

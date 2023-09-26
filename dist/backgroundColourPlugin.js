@@ -1,4 +1,7 @@
-export class BackgroundColourPlugin {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BackgroundColourPlugin = void 0;
+class BackgroundColourPlugin {
     constructor(_width, _height, _fillStyle) {
         this._width = _width;
         this._height = _height;
@@ -13,4 +16,5 @@ export class BackgroundColourPlugin {
         ctx.restore();
     }
 }
+exports.BackgroundColourPlugin = BackgroundColourPlugin;
 //# sourceMappingURL=backgroundColourPlugin.js.map
