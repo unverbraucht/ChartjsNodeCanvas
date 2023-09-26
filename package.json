@@ -47,7 +47,7 @@
     "@types/node": "^16.10.4",
     "@types/offscreencanvas": "^2019.6.4",
     "c8": "^7.10.0",
-    "chart.js": "^4.4.0",
+    "chart.js": "git@github.com:unverbraucht/Chart.js.git#master",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-crosshair": "^2.0.0",
     "chartjs-plugin-datalabels": "^2.2.0",

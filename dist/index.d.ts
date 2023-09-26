@@ -61,7 +61,7 @@ export declare class ChartJSNodeCanvas {
      *
      * @param options Configuration for this instance
      */
-    constructor(options: ChartJSNodeCanvasOptions);
+    constructor(options: ChartJSNodeCanvasOptions, chartJs: typeof ChartJS);
     /**
      * Render to a data url.
      * @see https://github.com/Automattic/node-canvas#canvastodataurl

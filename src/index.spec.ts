@@ -1,8 +1,10 @@
 import { Assert } from 'ts-std-lib';
 import { describe, it } from 'mocha';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, Chart, LinearScale, BarController, BarElement, CategoryScale, LineController, LineElement, PointElement } from 'chart.js';
 
-import { ChartJSNodeCanvas, ChartCallback, CanvasType, MimeType, ChartJSNodeCanvasPlugins } from './';
+import { ChartJSNodeCanvas, ChartCallback, CanvasType, MimeType, ChartJSNodeCanvasPlugins } from './index.js';
+
+Chart.register(BarController, BarElement, CategoryScale, LineController, LinearScale, LineElement, PointElement);
 
 const assert = new Assert();
 
@@ -68,7 +70,7 @@ describe(ChartJSNodeCanvas.name, () => {
 			ChartJS.defaults.responsive = true;
 			ChartJS.defaults.maintainAspectRatio = false;
 		};
-		return new ChartJSNodeCanvas({ width, height, chartCallback, type, plugins });
+		return new ChartJSNodeCanvas({ width, height, chartCallback, type, plugins }, Chart);
 	}
 
 	const mimeTypes: ReadonlyArray<MimeType> = ['image/png', 'image/jpeg'];

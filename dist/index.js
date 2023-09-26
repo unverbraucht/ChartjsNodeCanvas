@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChartJSNodeCanvas = void 0;
 const tslib_1 = require("tslib");
+const chart_js_1 = require("chart.js");
 const canvas_1 = (0, tslib_1.__importDefault)(require("canvas"));
 const backgroundColourPlugin_1 = require("./backgroundColourPlugin");
 class ChartJSNodeCanvas {
@@ -10,7 +11,7 @@ class ChartJSNodeCanvas {
      *
      * @param options Configuration for this instance
      */
-    constructor(options) {
+    constructor(options, chartJs) {
         if (options === null || typeof (options) !== 'object') {
             throw new Error('An options parameter object is required');
         }
@@ -26,7 +27,7 @@ class ChartJSNodeCanvas {
         this._registerFont = canvas_1.default.registerFont;
         this._image = canvas_1.default.Image;
         this._type = options.type && options.type.toLowerCase();
-        this._chartJs = this.initialize(options);
+        this._chartJs = this.initialize(options, chartJs);
     }
     /**
      * Render to a data url.
@@ -144,42 +145,35 @@ class ChartJSNodeCanvas {
     registerFont(path, options) {
         this._registerFont(path, options);
     }
-    initialize(options) {
+    initialize(options, chartJs) {
         var _a, _b, _c, _d;
-        const chartJs = require('chart.js/auto').Chart;
         if ((_a = options.plugins) === null || _a === void 0 ? void 0 : _a.requireChartJSLegacy) {
             for (const plugin of options.plugins.requireChartJSLegacy) {
                 require(plugin);
-                delete require.cache[require.resolve(plugin)];
             }
         }
         if ((_b = options.plugins) === null || _b === void 0 ? void 0 : _b.globalVariableLegacy) {
-            global.Chart = chartJs;
             for (const plugin of options.plugins.globalVariableLegacy) {
                 require(plugin);
             }
-            delete global.Chart;
         }
         if ((_c = options.plugins) === null || _c === void 0 ? void 0 : _c.modern) {
             for (const plugin of options.plugins.modern) {
                 if (typeof plugin === 'string') {
-                    chartJs.register(require(plugin));
+                    chart_js_1.Chart.register(require(plugin));
                 }
                 else {
-                    chartJs.register(plugin);
+                    chart_js_1.Chart.register(plugin);
                 }
             }
         }
         if ((_d = options.plugins) === null || _d === void 0 ? void 0 : _d.requireLegacy) {
             for (const plugin of options.plugins.requireLegacy) {
-                chartJs.register(require(plugin));
+                chart_js_1.Chart.register(require(plugin));
             }
         }
-        if (options.chartCallback) {
-            options.chartCallback(chartJs);
-        }
         if (options.backgroundColour) {
-            chartJs.register(new backgroundColourPlugin_1.BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
+            chart_js_1.Chart.register(new backgroundColourPlugin_1.BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
         }
         return chartJs;
     }

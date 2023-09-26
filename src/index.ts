@@ -77,7 +77,7 @@ export class ChartJSNodeCanvas {
 	 *
 	 * @param options Configuration for this instance
 	 */
-	constructor(options: ChartJSNodeCanvasOptions) {
+	constructor(options: ChartJSNodeCanvasOptions, chartJs: typeof ChartJS) {
 
 		if (options === null || typeof (options) !== 'object') {
 			throw new Error('An options parameter object is required');
@@ -95,7 +95,7 @@ export class ChartJSNodeCanvas {
 		this._registerFont = canvas.registerFont;
 		this._image = canvas.Image;
 		this._type = options.type && options.type.toLowerCase() as CanvasType;
-		this._chartJs = this.initialize(options);
+		this._chartJs = this.initialize(options, chartJs);
 	}
 
 	/**
@@ -226,47 +226,38 @@ export class ChartJSNodeCanvas {
 		this._registerFont(path, options);
 	}
 
-	private initialize(options: ChartJSNodeCanvasOptions): typeof ChartJS {
-
-		const chartJs: typeof ChartJS = require('chart.js/auto').Chart;
+	private initialize(options: ChartJSNodeCanvasOptions, chartJs: typeof ChartJS): typeof ChartJS {
 
 		if (options.plugins?.requireChartJSLegacy) {
 			for (const plugin of options.plugins.requireChartJSLegacy) {
 				require(plugin);
-				delete require.cache[require.resolve(plugin)];
 			}
 		}
 
 		if (options.plugins?.globalVariableLegacy) {
-			(global as any).Chart = chartJs;
 			for (const plugin of options.plugins.globalVariableLegacy) {
 				require(plugin);
 			}
-			delete (global as any).Chart;
 		}
 
 		if (options.plugins?.modern) {
 			for (const plugin of options.plugins.modern) {
 				if (typeof plugin === 'string') {
-					chartJs.register(require(plugin));
+					ChartJS.register(require(plugin));
 				} else {
-					chartJs.register(plugin);
+					ChartJS.register(plugin);
 				}
 			}
 		}
 
 		if (options.plugins?.requireLegacy) {
 			for (const plugin of options.plugins.requireLegacy) {
-				chartJs.register(require(plugin));
+				ChartJS.register(require(plugin));
 			}
 		}
 
-		if (options.chartCallback) {
-			options.chartCallback(chartJs);
-		}
-
 		if (options.backgroundColour) {
-			chartJs.register(new BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
+			ChartJS.register(new BackgroundColourPlugin(options.width, options.height, options.backgroundColour));
 		}
 
 		return chartJs;

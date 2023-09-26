@@ -5,7 +5,7 @@ import { join } from 'path';
 import { Readable } from 'stream';
 import { describe, it } from 'mocha';
 import { Stream } from 'stream';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, Chart } from 'chart.js';
 import resemble /*, { ResembleSingleCallbackComparisonOptions, ResembleSingleCallbackComparisonResult }*/ from 'resemblejs';
 
 import { ChartJSNodeCanvas, ChartCallback } from './';
@@ -70,13 +70,13 @@ describe(ChartJSNodeCanvas.name, () => {
 	};
 
 	it('works with render to buffer', async () => {
-		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' });
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' }, Chart);
 		const actual = await chartJSNodeCanvas.renderToBuffer(configuration);
 		await assertImage(actual, 'render-to-buffer');
 	});
 
 	it('works with render to data url', async () => {
-		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' });
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' }, Chart);
 		const actual = await chartJSNodeCanvas.renderToDataURL(configuration);
 		const extension = '.txt';
 		const fileName = 'render-to-data-URL';
@@ -104,7 +104,7 @@ describe(ChartJSNodeCanvas.name, () => {
 	});
 
 	it('works with render to stream', async () => {
-		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' });
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback, backgroundColour: 'white' }, Chart);
 		const stream = chartJSNodeCanvas.renderToStream(configuration);
 		const actual = await streamToBuffer(stream);
 		await assertImage(actual, 'render-to-stream');
@@ -115,7 +115,7 @@ describe(ChartJSNodeCanvas.name, () => {
 			width, height, backgroundColour: 'white', plugins: {
 				modern: ['chartjs-plugin-annotation']
 			}
-		});
+		}, Chart);
 		const actual = await chartJSNodeCanvas.renderToBuffer({
 			type: 'bar',
 			data: {
@@ -193,7 +193,7 @@ describe(ChartJSNodeCanvas.name, () => {
 					'chartjs-plugin-datalabels'
 				]
 			}
-		});
+		}, Chart);
 		const actual = await chartJSNodeCanvas.renderToBuffer({
 			type: 'bar',
 			data: {
@@ -265,7 +265,7 @@ describe(ChartJSNodeCanvas.name, () => {
 			width, height, backgroundColour: 'white', chartCallback: (ChartJS) => {
 				ChartJS.defaults.font.family = 'VTKS UNAMOUR';
 			}
-		});
+		}, Chart);
 		chartJSNodeCanvas.registerFont('./testData/VTKS UNAMOUR.ttf', { family: 'VTKS UNAMOUR' });
 		const actual = await chartJSNodeCanvas.renderToBuffer({
 			type: 'bar',
@@ -313,7 +313,7 @@ describe(ChartJSNodeCanvas.name, () => {
 
 	it('works without background color', async () => {
 
-		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback });
+		const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback }, Chart);
 		const actual = await chartJSNodeCanvas.renderToBuffer(configuration);
 		await assertImage(actual, 'no-background-color');
 	});
