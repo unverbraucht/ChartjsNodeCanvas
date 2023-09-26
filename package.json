@@ -41,7 +41,7 @@
   "peerDependencies": {
     "chart.js": "^4.4.0"
   },
-  "devDependencies": {
+    "devDependencies": {
     "@energiency/chartjs-plugin-piechart-outlabels": "^1.3.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^16.10.4",
