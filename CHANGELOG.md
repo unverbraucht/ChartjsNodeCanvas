@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.9
+Drop freshrequire stuff - doesn't work on either modern browserify or
+nodejs.
+Try to require chart.js/auto.Chart
+Constructor accepts Chart.js class so we don't have to dynamically require.
+
 ## 4.0.0
 
 Migrated to support chart.js v3.x.x, dropped support for 2.x.x
